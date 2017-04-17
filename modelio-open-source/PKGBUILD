@@ -1,0 +1,34 @@
+# Contributor: daniel[dot]kupiniak[at]gmail[dot]com
+
+pkgname=modelio-open-source
+pkgver=3.6.1
+pkgrel=1
+pkgdesc="UML/BPMN modeler
+ Modelio is first and foremost a modeling environment, supporting a wide range of UML/BPMN models and diagrams, and providing model assistance and consistency checking features."
+
+arch=('i686' 'x86_64')
+url="https://www.modelio.org"
+license=('GPL')
+depends=('libxtst' 'glibc' 'atk' 'cairo' 'gtk2' 'glib2' 'webkitgtk2' 'gcc-libs')
+
+if [ "${CARCH}" = 'x86_64' ]; then
+    ARCH='amd64'
+    md5sums=('4f99d52a55cecbe0e641bb2f516b9a14')
+elif [ "${CARCH}" = 'i686' ]; then
+    ARCH='i386'
+    md5sums=('e2194b702e869b556447aac460c7ba1b')
+fi
+
+source_name=${pkgname}-${pkgver}.deb
+source_url="https://sourceforge.net/projects/modeliouml/files/${pkgver}/${pkgname}-${pkgver}_${ARCH}.deb/download"
+source=(${source_name}::${source_url})
+
+package(){
+
+  mkdir -p ${pkgdir}/usr/bin
+  tar -xf data.tar.?z -C "$pkgdir"
+
+  # dirname from data.tar.?z
+  modelio_name=${pkgname}3.6
+  ln -s ${pkgdir}/usr/lib/${modelio_name}/modelio.sh ${pkgdir}/usr/bin/${modelio_name}
+}
